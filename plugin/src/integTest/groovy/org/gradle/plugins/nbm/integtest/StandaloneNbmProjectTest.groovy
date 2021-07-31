@@ -99,8 +99,8 @@ nbm {
   moduleName = 'com.foo.acme'
 }
 dependencies {
-  compile 'org.netbeans.api:org-openide-awt:RELEASE74'
-  compile 'org.netbeans.api:org-openide-util:RELEASE74'
+  netbeans 'org.netbeans.api:org-openide-awt:RELEASE74'
+  netbeans 'org.netbeans.api:org-openide-util:RELEASE74'
 }
 """
         def srcDir = createNewDir(integTestDir, 'src/main/java/com/mycompany/standalone')
@@ -181,8 +181,8 @@ nbm {
   moduleName = 'com.foo.acme'
 }
 dependencies {
-  compile 'org.netbeans.api:org-openide-util:RELEASE74'
-  compile 'org.slf4j:slf4j-api:1.7.2'
+  netbeans 'org.netbeans.api:org-openide-util:RELEASE74'
+  implementation 'org.slf4j:slf4j-api:1.7.2'
 }
 """
         def srcDir = createNewDir(integTestDir, 'src/main/java/com/mycompany/standalone')
@@ -221,8 +221,8 @@ nbm {
   classpathExtFolder = 'acme'
 }
 dependencies {
-  compile 'org.netbeans.api:org-openide-util:RELEASE74'
-  compile 'org.slf4j:slf4j-api:1.7.2'
+  netbeans 'org.netbeans.api:org-openide-util:RELEASE74'
+  implementation 'org.slf4j:slf4j-api:1.7.2'
 }
 """
         def srcDir = createNewDir(integTestDir, 'src/main/java/com/mycompany/standalone')

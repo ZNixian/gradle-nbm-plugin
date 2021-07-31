@@ -23,6 +23,7 @@ public class NbmPlugin implements Plugin<Project> {
     public static final String PROVIDED_RUNTIME_CONFIGURATION_NAME = "providedRuntime";
     public static final String IMPLEMENTATION_CONFIGURATION_NAME = "nbimplementation";
     public static final String BUNDLE_CONFIGURATION_NAME = "bundle";
+    public static final String NETBEANS_CONFIGURATION_NAME = "netbeans";
 
     private static final String NBM_TASK = 'nbm'
     private static final String NETBEANS_TASK = 'netbeans'
@@ -145,10 +146,15 @@ public class NbmPlugin implements Plugin<Project> {
                 setDescription("NBM module's implementation dependencies");
         Configuration bundleConfiguration = configurationContainer.create(BUNDLE_CONFIGURATION_NAME).setVisible(false).
                 setDescription("NBM module's dependencies on OSGi bundles");
+        Configuration netbeansConfiguration = configurationContainer.create(NETBEANS_CONFIGURATION_NAME).setVisible(false).
+                setDescription("NBM module's dependencies on official NetBeans modules");
         configurationContainer.getByName(JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME)
                 .extendsFrom(provideCompileConfiguration)
                 .extendsFrom(implementationConfiguration)
-                .extendsFrom(bundleConfiguration);
+                .extendsFrom(bundleConfiguration)
+                .extendsFrom(netbeansConfiguration)
+        configurationContainer.getByName(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME)
+                .extendsFrom(netbeansConfiguration)
         configurationContainer.getByName(JavaPlugin.RUNTIME_CLASSPATH_CONFIGURATION_NAME).extendsFrom(provideRuntimeConfiguration);
     }
 

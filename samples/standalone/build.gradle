@@ -39,13 +39,9 @@ nbm {
 }
 
 dependencies {
-    implementation "org.netbeans.api:org-openide-awt:$netbeansVersion"
-    annotationProcessor "org.netbeans.api:org-openide-awt:$netbeansVersion"
-    implementation "org.netbeans.api:org-openide-util:$netbeansVersion"
-    implementation "org.netbeans.api:org-netbeans-api-annotations-common:$netbeansVersion"
-
-    // Use 'implementation' configured if implementation dependency is needed for some module
-    // implementation "org.netbeans.api:org-netbeans-api-annotations-common:$netbeansVersion"
+    netbeans "org.netbeans.api:org-openide-awt:$netbeansVersion"
+    netbeans "org.netbeans.api:org-openide-util:$netbeansVersion"
+    netbeans "org.netbeans.api:org-netbeans-api-annotations-common:$netbeansVersion"
 
     // example of dependency that will be copied to modules/ext and added to ClassPath: attribute in MANIFEST.MF
     implementation 'org.slf4j:slf4j-api:1.7.2'
