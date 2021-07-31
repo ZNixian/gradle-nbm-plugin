@@ -381,6 +381,57 @@ nbm {
         assert !moduleXml.param.find { it.@name == 'enabled' }.toBoolean()
     }
 
+    def "use generated bundle class"() {
+        buildFile << """
+apply plugin: 'java'
+apply plugin: org.gradle.plugins.nbm.NbmPlugin
+
+dependencies {
+  netbeans 'org.netbeans.api:org-openide-awt:${nbVersion}'
+  netbeans 'org.netbeans.api:org-openide-util:${nbVersion}'
+  testImplementation "junit:junit:4.11"
+}
+
+test {
+  useJUnit()
+  dependsOn 'nbm'
+}
+"""
+        def srcDir = createNewDir(integTestDir, 'src/main/java/com/mycompany/standalone')
+        createNewFile(srcDir, 'Main.java') << """
+package com.mycompany.standalone;
+import org.openide.util.NbBundle;
+@NbBundle.Messages("TEST_HelloWorld=Hello, World!")
+public class Main {
+    public static String hello() {
+        return Bundle.TEST_HelloWorld();
+    }
+}
+"""
+        def testDir = createNewDir(integTestDir, 'src/test/java/com/mycompany/standalone')
+        createNewFile(testDir, 'MainTest.java') << """
+package com.mycompany.standalone;
+public class MainTest {
+    @org.junit.Test
+    public void testMessage() {
+        org.junit.Assert.assertEquals("Hello, World!", Main.hello());
+    }
+}
+"""
+        def resDir = createNewDir(integTestDir, 'src/main/resources/com/mycompany/standalone')
+        createNewFile(resDir, 'Bundle.properties') << """
+MyKey=value
+"""
+
+        when:
+        GradleProject project = runTasks(integTestDir, "test")
+
+        then:
+        project != null
+        project.tasks.find { it.name == 'test' } != null
+        assertThat(new File(getIntegTestDir(), 'build/classes/java/main/com/mycompany/standalone/Bundle.class'), FileMatchers.exists())
+    }
+
     private Iterable<String> moduleDependencies(File jarFile) {
         JarFile jar = new JarFile(jarFile)
         def attrs = jar.manifest?.mainAttributes
