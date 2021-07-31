@@ -5,11 +5,13 @@ import com.google.common.collect.Iterables
 import com.google.common.io.Files
 import groovy.util.slurpersupport.GPathResult
 import org.gradle.tooling.model.GradleProject
+import org.xml.sax.EntityResolver
+import org.xml.sax.InputSource
+import org.xml.sax.SAXException
 
+import javax.xml.parsers.SAXParserFactory
 import java.util.jar.Attributes
 import java.util.jar.JarFile
-import org.apache.xml.resolver.CatalogManager
-import org.apache.xml.resolver.tools.ResolvingXMLReader
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.Matchers.not
@@ -408,7 +410,23 @@ nbm {
     private GPathResult moduleXml(File jarFile, String resourceName) {
         new JarFile(jarFile).withCloseable { jar ->
             jar.getInputStream(jar.getEntry(resourceName)).withCloseable { is ->
-                return new XmlSlurper(new ResolvingXMLReader(cm)).parse(is)
+                def factory = SAXParserFactory.newInstance()
+
+                // Don't lookup external resources - relying on some external resource to fetch over and
+                // over isn't ideal from a stability standpoint.
+                def resolver = new EntityResolver() {
+                    @Override
+                    InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                        def localCopy = cm.catalog.resolveEntity(null, publicId, systemId)
+                        if (localCopy == null)
+                            throw new Exception("Could not DTD find file in catalogue: pub = ${publicId} sys = ${systemId}")
+                        return new InputSource(localCopy)
+                    }
+                }
+
+                def reader = factory.newSAXParser().getXMLReader()
+                reader.setEntityResolver(resolver)
+                return new XmlSlurper(reader).parse(is)
             }
         }
     }

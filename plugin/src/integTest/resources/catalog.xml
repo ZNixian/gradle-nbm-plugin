@@ -2,9 +2,13 @@
 <!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
          "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
 
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">                
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
 
 	<public publicId="-//NetBeans//DTD Autoupdate Module Info 2.4//EN" uri="autoupdate-info-2_4.dtd"/>
 	<system systemId="http://www.netbeans.org/dtds/autoupdate-info-2_3.dtd" uri="autoupdate-info-2_4.dtd"/>
+	<public publicId="-//NetBeans//DTD Module Status 1.0//EN" uri="module-status-1_0.dtd"/>
+	<system systemId="http://www.netbeans.org/dtds/module-status-1_0.dtd" uri="module-status-1_0.dtd"/>
+	<public publicId="-//NetBeans//DTD Autoupdate Module Info 2.5//EN" uri="autoupdate-info-2_5.dtd"/>
+	<system systemId="http://www.netbeans.org/dtds/autoupdate-info-2_5.dtd" uri="autoupdate-info-2_5.dtd"/>
 
 </catalog>
