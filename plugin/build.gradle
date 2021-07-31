@@ -13,6 +13,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 apply plugin: "org.ajoberstar.release-opinion"
+apply plugin: 'java-gradle-plugin'
 
 def compatibilityVersion = JavaVersion.VERSION_1_8
 sourceCompatibility = compatibilityVersion
@@ -87,6 +88,7 @@ task integTest(type: Test) {
 
     systemProperty "xml.catalog.files", catalogPath
 
+    useJUnitPlatform()
 }
 
 task testJenkins(dependsOn: test) {
