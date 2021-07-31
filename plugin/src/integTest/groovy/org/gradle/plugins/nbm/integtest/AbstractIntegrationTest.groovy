@@ -15,6 +15,7 @@
  */
 package org.gradle.plugins.nbm.integtest
 
+import org.apache.xml.resolver.CatalogManager
 import org.gradle.tooling.BuildLauncher
 import org.gradle.tooling.GradleConnector
 import org.gradle.tooling.ProjectConnection
@@ -22,7 +23,6 @@ import org.gradle.tooling.model.GradleProject
 import spock.lang.Specification
 
 import static org.spockframework.util.Assert.fail
-import org.apache.xml.resolver.CatalogManager
 
 /**
  * Abstract integration test using Gradle's tooling API.
@@ -54,15 +54,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath files('../classes/main')
+        classpath files('../classes/groovy/main')
+        classpath files('../resources/main')
     }
 }
 
 repositories {
     mavenCentral()
-    maven {
-        url 'http://bits.netbeans.org/maven2/'
-    }
 }
 """
         File settingsFile = createNewFile(integTestDir, 'settings.gradle')
