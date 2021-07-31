@@ -35,6 +35,8 @@ abstract class AbstractIntegrationTest extends Specification {
     File gradlePropsFile
     CatalogManager cm
 
+    String nbVersion = "RELEASE124"
+
     def setup() {
         integTestDir = new File('build/integTest')
 

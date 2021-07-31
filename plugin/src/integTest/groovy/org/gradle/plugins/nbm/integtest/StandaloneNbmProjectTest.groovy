@@ -99,8 +99,8 @@ nbm {
   moduleName = 'com.foo.acme'
 }
 dependencies {
-  netbeans 'org.netbeans.api:org-openide-awt:RELEASE74'
-  netbeans 'org.netbeans.api:org-openide-util:RELEASE74'
+  netbeans 'org.netbeans.api:org-openide-awt:${nbVersion}'
+  netbeans 'org.netbeans.api:org-openide-util:${nbVersion}'
 }
 """
         def srcDir = createNewDir(integTestDir, 'src/main/java/com/mycompany/standalone')
@@ -160,14 +160,14 @@ MyKey=value
         then:
         project != null
         project.tasks.find { it.name == 'nbm' } != null
-        assertThat(new File(getIntegTestDir(), 'build/classes/main/META-INF/services/com.mycompany.standalone.Service'), FileMatchers.exists())
+        assertThat(new File(getIntegTestDir(), 'build/classes/java/main/META-INF/services/com.mycompany.standalone.Service'), FileMatchers.exists())
         assertThat(new File(getIntegTestDir(), 'build/module/config/Modules/com-foo-acme.xml'), FileMatchers.exists())
         assertThat(moduleJar, FileMatchers.exists())
         assertThat(new File(getIntegTestDir(), 'build/module/update_tracking/com-foo-acme.xml'), FileMatchers.exists())
         assertThat(new File(getIntegTestDir(), 'build/module/.lastModified'), FileMatchers.exists())
 
-        Iterables.contains(moduleDependencies(moduleJar), 'org.openide.util > 8.33.1')
-        Iterables.contains(moduleDependencies(moduleJar), 'org.openide.awt > 7.59.1')
+        Iterables.contains(moduleDependencies(moduleJar), 'org.openide.util > 9.19')
+        Iterables.contains(moduleDependencies(moduleJar), 'org.openide.awt > 7.80')
         moduleProperties(moduleJar, 'com/mycompany/standalone/Bundle.properties').getProperty('MyKey') == 'value'
         moduleProperties(moduleJar, 'com/mycompany/standalone/Bundle.properties').getProperty('CTL_HelloAction') == 'Say hello'
     }
@@ -181,7 +181,7 @@ nbm {
   moduleName = 'com.foo.acme'
 }
 dependencies {
-  netbeans 'org.netbeans.api:org-openide-util:RELEASE74'
+  netbeans 'org.netbeans.api:org-openide-util:${nbVersion}'
   implementation 'org.slf4j:slf4j-api:1.7.2'
 }
 """
@@ -206,7 +206,7 @@ public class Service {
         project.tasks.find { it.name == 'nbm' } != null
         assertThat(moduleJar, FileMatchers.exists())
         assertThat(new File(getIntegTestDir(), 'build/module/modules/ext/slf4j-api-1.7.2.jar'), FileMatchers.exists())
-        assertThat(new File(getIntegTestDir(), 'build/module/modules/ext/org-openide-util-lookup-RELEASE74.jar'), not(FileMatchers.exists()))
+        assertThat(new File(getIntegTestDir(), "build/module/modules/ext/org-openide-util-lookup-${nbVersion}.jar"), not(FileMatchers.exists()))
 
         Iterables.contains(moduleClasspath(moduleJar), 'ext/slf4j-api-1.7.2.jar')
     }
@@ -221,7 +221,7 @@ nbm {
   classpathExtFolder = 'acme'
 }
 dependencies {
-  netbeans 'org.netbeans.api:org-openide-util:RELEASE74'
+  netbeans 'org.netbeans.api:org-openide-util:${nbVersion}'
   implementation 'org.slf4j:slf4j-api:1.7.2'
 }
 """
@@ -246,8 +246,8 @@ public class Service {
         project.tasks.find { it.name == 'nbm' } != null
         assertThat(moduleJar, FileMatchers.exists())
         assertThat(new File(getIntegTestDir(), 'build/module/modules/ext/acme/slf4j-api-1.7.2.jar'), FileMatchers.exists())
-        assertThat(new File(getIntegTestDir(), 'build/module/modules/ext/acme/org-openide-util-lookup-RELEASE74.jar'), not(FileMatchers.exists()))
-        assertThat(new File(getIntegTestDir(), 'build/module/modules/ext/org-openide-util-lookup-RELEASE74.jar'), not(FileMatchers.exists()))
+        assertThat(new File(getIntegTestDir(), "build/module/modules/ext/acme/org-openide-util-lookup-${nbVersion}.jar"), not(FileMatchers.exists()))
+        assertThat(new File(getIntegTestDir(), "build/module/modules/ext/org-openide-util-lookup-${nbVersion}.jar"), not(FileMatchers.exists()))
 
         Iterables.contains(moduleClasspath(moduleJar), 'ext/acme/slf4j-api-1.7.2.jar')
     }
